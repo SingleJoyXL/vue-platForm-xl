@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore, getActivePinia } from "pinia";
 import { store } from "#/store";
 import { userType } from "./types";
 import { routerArrays } from "#/layout/types";
@@ -14,8 +14,7 @@ import {
   getAvatarContext
 } from "#/api/base";
 
-export const useUserStore = defineStore({
-  id: "pure-user",
+export const useUserStore = defineStore("pure-user", {
   state: (): userType => ({
     //用户ID
     id: storageSession().getItem<DataInfo>(sessionKey)?.id ?? "",
@@ -111,5 +110,5 @@ export const useUserStore = defineStore({
 });
 
 export function useUserStoreHook() {
-  return useUserStore();
+  return useUserStore(getActivePinia() || store);
 }

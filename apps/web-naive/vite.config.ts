@@ -1,5 +1,4 @@
 import { defineConfig } from '@vben/vite-config';
-import { resolve } from 'path';
 
 export default defineConfig(async () => {
   return {
@@ -174,18 +173,6 @@ export default defineConfig(async () => {
             rewrite: path => path.replace(/^\/dashboard/, "dashboard")
           }
         },
-      },
-      resolve: {
-        alias: [
-          {
-            find: '@',
-            replacement: resolve(__dirname, './src'),
-          },
-          {
-            find: '#',
-            replacement: resolve(__dirname, './src'),
-          },
-        ],
       },
     },
   };

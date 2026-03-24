@@ -105,7 +105,7 @@ const { VITE_HIDE_HOME } = import.meta.env;
 
 let isCheckingUser = false;
 
-router.beforeEach((to: ToRouteType, _from, next) => {
+router.beforeEach((to: any, _from, next) => {
   if (to.meta?.keepAlive) {
     handleAliveRoute(to, "add");
     // 页面整体刷新和点击标签页刷新

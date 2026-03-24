@@ -10,5 +10,4 @@ export default [
       rank: 101
     }
   },
-
 ];

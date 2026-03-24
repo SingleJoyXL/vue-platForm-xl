@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore, getActivePinia } from "pinia";
 import { store } from "#/store";
 import { cacheType } from "./types";
 import { constantMenus } from "#/router";
@@ -7,8 +7,7 @@ import { debounce, getKeyList } from "@pureadmin/utils";
 import { ascending, filterTree, filterNoPermissionTree } from "#/router/utils";
 import router from "#/router";
 
-export const usePermissionStore = defineStore({
-  id: "pure-permission",
+export const usePermissionStore = defineStore("pure-permission", {
   state: () => ({
     // 静态路由生成的菜单
     constantMenus,
@@ -68,5 +67,5 @@ export const usePermissionStore = defineStore({
 });
 
 export function usePermissionStoreHook() {
-  return usePermissionStore(store);
+  return usePermissionStore(getActivePinia() || store);
 }

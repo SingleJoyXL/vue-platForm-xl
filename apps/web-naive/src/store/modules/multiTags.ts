@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore, getActivePinia } from "pinia";
 import { store } from "#/store";
 import { routerArrays } from "#/layout/types";
 import type { multiType, positionType } from "./types";
@@ -34,8 +34,7 @@ interface StorageConfigs {
   showModel?: string;
   username?: string;
 }
-export const useMultiTagsStore = defineStore({
-  id: "pure-multiTags",
+export const useMultiTagsStore = defineStore("pure-multiTags", {
   state: () => ({
     // 存储标签页信息（路由信息）
     multiTags: storageLocal().getItem<StorageConfigs>(
@@ -153,5 +152,5 @@ export const useMultiTagsStore = defineStore({
 });
 
 export function useMultiTagsStoreHook() {
-  return useMultiTagsStore(store);
+  return useMultiTagsStore(getActivePinia() || store);
 }
