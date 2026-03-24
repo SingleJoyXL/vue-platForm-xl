@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import type { GlobalThemeOverrides } from 'naive-ui';
+import type {GlobalThemeOverrides} from 'naive-ui';
 
-import { computed } from 'vue';
+import {computed} from 'vue';
 
-import { useNaiveDesignTokens } from '@vben/hooks';
-import { preferences } from '@vben/preferences';
+import {useNaiveDesignTokens} from '@vben/hooks';
+import {preferences} from '@vben/preferences';
 
 import {
   darkTheme,
@@ -18,9 +18,9 @@ import {
   zhCN,
 } from 'naive-ui';
 
-defineOptions({ name: 'App' });
+defineOptions({name: 'App'});
 
-const { commonTokens } = useNaiveDesignTokens();
+const {commonTokens} = useNaiveDesignTokens();
 
 const tokenLocale = computed(() =>
   preferences.app.locale === 'zh-CN' ? zhCN : enUS,
@@ -49,7 +49,7 @@ const themeOverrides = computed((): GlobalThemeOverrides => {
   >
     <NNotificationProvider>
       <NMessageProvider>
-        <RouterView />
+        <RouterView/>
       </NMessageProvider>
     </NNotificationProvider>
   </NConfigProvider>

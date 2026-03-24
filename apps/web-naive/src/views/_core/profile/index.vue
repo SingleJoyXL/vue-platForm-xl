@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import {ref} from 'vue';
 
-import { Profile } from '@vben/common-ui';
-import { useUserStore } from '@vben/stores';
+import {Profile} from '@vben/common-ui';
+import {useUserStore} from '@vben/stores';
 
 import ProfileBase from './base-setting.vue';
 import ProfileNotificationSetting from './notification-setting.vue';
@@ -40,10 +40,10 @@ const tabs = ref([
     :tabs="tabs"
   >
     <template #content>
-      <ProfileBase v-if="tabsValue === 'basic'" />
-      <ProfileSecuritySetting v-if="tabsValue === 'security'" />
-      <ProfilePasswordSetting v-if="tabsValue === 'password'" />
-      <ProfileNotificationSetting v-if="tabsValue === 'notice'" />
+      <ProfileBase v-if="tabsValue === 'basic'"/>
+      <ProfileSecuritySetting v-if="tabsValue === 'security'"/>
+      <ProfilePasswordSetting v-if="tabsValue === 'password'"/>
+      <ProfileNotificationSetting v-if="tabsValue === 'notice'"/>
     </template>
   </Profile>
 </template>

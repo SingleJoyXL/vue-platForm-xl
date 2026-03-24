@@ -1,13 +1,13 @@
-import type { App } from 'vue';
+import type {App} from 'vue';
 
-import type { LocaleSetupOptions, SupportedLanguagesType } from '@vben/locales';
+import type {LocaleSetupOptions, SupportedLanguagesType} from '@vben/locales';
 
 import {
   $t,
   setupI18n as coreSetup,
   loadLocalesMapFromDir,
 } from '@vben/locales';
-import { preferences } from '@vben/preferences';
+import {preferences} from '@vben/preferences';
 
 const modules = import.meta.glob('./langs/**/*.json');
 
@@ -35,4 +35,4 @@ async function setupI18n(app: App, options: LocaleSetupOptions = {}) {
   });
 }
 
-export { $t, setupI18n };
+export {$t, setupI18n};

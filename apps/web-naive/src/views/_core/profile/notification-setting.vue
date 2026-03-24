@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import {computed} from 'vue';
 
-import { ProfileNotificationSetting } from '@vben/common-ui';
+import {ProfileNotificationSetting} from '@vben/common-ui';
 
 const formSchema = computed(() => {
   return [
@@ -27,5 +27,5 @@ const formSchema = computed(() => {
 });
 </script>
 <template>
-  <ProfileNotificationSetting :form-schema="formSchema" />
+  <ProfileNotificationSetting :form-schema="formSchema"/>
 </template>

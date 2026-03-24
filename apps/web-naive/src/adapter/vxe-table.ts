@@ -1,12 +1,12 @@
-import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
+import type {VxeTableGridOptions} from '@vben/plugins/vxe-table';
 
-import { h } from 'vue';
+import {h} from 'vue';
 
-import { setupVbenVxeTable, useVbenVxeGrid } from '@vben/plugins/vxe-table';
+import {setupVbenVxeTable, useVbenVxeGrid} from '@vben/plugins/vxe-table';
 
-import { NButton, NImage } from 'naive-ui';
+import {NButton, NImage} from 'naive-ui';
 
-import { useVbenForm } from './form';
+import {useVbenForm} from './form';
 
 setupVbenVxeTable({
   configVxeTable: (vxeUI) => {
@@ -41,20 +41,20 @@ setupVbenVxeTable({
     // 表格配置项可以用 cellRender: { name: 'CellImage' },
     vxeUI.renderer.add('CellImage', {
       renderTableDefault(renderOpts, params) {
-        const { props } = renderOpts;
-        const { column, row } = params;
-        return h(NImage, { src: row[column.field], ...props });
+        const {props} = renderOpts;
+        const {column, row} = params;
+        return h(NImage, {src: row[column.field], ...props});
       },
     });
 
     // 表格配置项可以用 cellRender: { name: 'CellLink' },
     vxeUI.renderer.add('CellLink', {
       renderTableDefault(renderOpts) {
-        const { props } = renderOpts;
+        const {props} = renderOpts;
         return h(
           NButton,
-          { size: 'small', type: 'primary', quaternary: true },
-          { default: () => props?.text },
+          {size: 'small', type: 'primary', quaternary: true},
+          {default: () => props?.text},
         );
       },
     });
@@ -65,6 +65,6 @@ setupVbenVxeTable({
   useVbenForm,
 });
 
-export { useVbenVxeGrid };
+export {useVbenVxeGrid};
 
 export type * from '@vben/plugins/vxe-table';

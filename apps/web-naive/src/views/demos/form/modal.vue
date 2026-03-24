@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { useVbenModal } from '@vben/common-ui';
+import {useVbenModal} from '@vben/common-ui';
 
-import { useVbenForm } from '#/adapter/form';
+import {useVbenForm} from '#/adapter/form';
 
 defineOptions({
   name: 'FormModelDemo',
@@ -31,8 +31,8 @@ const [Form, formApi] = useVbenForm({
       component: 'Select',
       componentProps: {
         options: [
-          { label: '选项1', value: '1' },
-          { label: '选项2', value: '2' },
+          {label: '选项1', value: '1'},
+          {label: '选项2', value: '2'},
         ],
         placeholder: '请输入',
       },
@@ -55,7 +55,7 @@ const [Modal, modalApi] = useVbenModal({
   },
   onOpenChange(isOpen: boolean) {
     if (isOpen) {
-      const { values } = modalApi.getData<Record<string, any>>();
+      const {values} = modalApi.getData<Record<string, any>>();
       if (values) {
         formApi.setValues(values);
       }
@@ -66,6 +66,6 @@ const [Modal, modalApi] = useVbenModal({
 </script>
 <template>
   <Modal>
-    <Form />
+    <Form/>
   </Modal>
 </template>

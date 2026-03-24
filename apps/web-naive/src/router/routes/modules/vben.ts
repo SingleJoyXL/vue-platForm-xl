@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router';
+import type {RouteRecordRaw} from 'vue-router';
 
 import {
   VBEN_ANT_PREVIEW_URL,
@@ -15,8 +15,8 @@ import {
   SvgTDesignIcon,
 } from '@vben/icons';
 
-import { IFrameView } from '#/layouts';
-import { $t } from '#/locales';
+import {IFrameView} from '#/layouts';
+import {$t} from '#/locales';
 
 const routes: RouteRecordRaw[] = [
   {

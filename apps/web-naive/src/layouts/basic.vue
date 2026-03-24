@@ -1,25 +1,25 @@
 <script lang="ts" setup>
-import type { NotificationItem } from '@vben/layouts';
+import type {NotificationItem} from '@vben/layouts';
 
-import { computed, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import {computed, ref, watch} from 'vue';
+import {useRouter} from 'vue-router';
 
-import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
-import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
-import { useWatermark } from '@vben/hooks';
-import { BookOpenText, CircleHelp, SvgGithubIcon } from '@vben/icons';
+import {AuthenticationLoginExpiredModal} from '@vben/common-ui';
+import {VBEN_DOC_URL, VBEN_GITHUB_URL} from '@vben/constants';
+import {useWatermark} from '@vben/hooks';
+import {BookOpenText, CircleHelp, SvgGithubIcon} from '@vben/icons';
 import {
   BasicLayout,
   LockScreen,
   Notification,
   UserDropdown,
 } from '@vben/layouts';
-import { preferences } from '@vben/preferences';
-import { useAccessStore, useUserStore } from '@vben/stores';
-import { openWindow } from '@vben/utils';
+import {preferences} from '@vben/preferences';
+import {useAccessStore, useUserStore} from '@vben/stores';
+import {openWindow} from '@vben/utils';
 
-import { $t } from '#/locales';
-import { useAuthStore } from '#/store';
+import {$t} from '#/locales';
+import {useAuthStore} from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
 
 const notifications = ref<NotificationItem[]>([
@@ -39,47 +39,14 @@ const notifications = ref<NotificationItem[]>([
     message: '描述信息描述信息描述信息',
     title: '朱偏右 回复了你',
   },
-  {
-    id: 3,
-    avatar: 'https://avatar.vercel.sh/1',
-    date: '2024-01-01',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '曲丽丽 评论了你',
-  },
-  {
-    id: 4,
-    avatar: 'https://avatar.vercel.sh/satori',
-    date: '1天前',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '代办提醒',
-  },
-  {
-    id: 5,
-    avatar: 'https://avatar.vercel.sh/satori',
-    date: '1天前',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '跳转Workspace示例',
-    link: '/workspace',
-  },
-  {
-    id: 6,
-    avatar: 'https://avatar.vercel.sh/satori',
-    date: '1天前',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '跳转外部链接示例',
-    link: 'https://doc.vben.pro',
-  },
+
 ]);
 
 const router = useRouter();
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const accessStore = useAccessStore();
-const { destroyWatermark, updateWatermark } = useWatermark();
+const {destroyWatermark, updateWatermark} = useWatermark();
 const showDot = computed(() =>
   notifications.value.some((item) => !item.isRead),
 );
@@ -87,7 +54,7 @@ const showDot = computed(() =>
 const menus = computed(() => [
   {
     handler: () => {
-      router.push({ name: 'Profile' });
+      router.push({name: 'Profile'});
     },
     icon: 'lucide:user',
     text: $t('page.auth.profile'),
@@ -153,7 +120,7 @@ watch(
     enable: preferences.app.watermark,
     content: preferences.app.watermarkContent,
   }),
-  async ({ enable, content }) => {
+  async ({enable, content}) => {
     if (enable) {
       await updateWatermark({
         content:
@@ -197,11 +164,11 @@ watch(
         v-model:open="accessStore.loginExpired"
         :avatar
       >
-        <LoginForm />
+        <LoginForm/>
       </AuthenticationLoginExpiredModal>
     </template>
     <template #lock-screen>
-      <LockScreen :avatar @to-login="handleLogout" />
+      <LockScreen :avatar @to-login="handleLogout"/>
     </template>
   </BasicLayout>
 </template>

@@ -3,17 +3,17 @@
  * 可用于 vben-form、vben-modal、vben-drawer 等组件使用,
  */
 
-import type { Component } from 'vue';
+import type {Component} from 'vue';
 
-import type { BaseFormComponentType } from '@vben/common-ui';
-import type { Recordable } from '@vben/types';
+import type {BaseFormComponentType} from '@vben/common-ui';
+import type {Recordable} from '@vben/types';
 
-import { defineAsyncComponent, defineComponent, h, ref } from 'vue';
+import {defineAsyncComponent, defineComponent, h, ref} from 'vue';
 
-import { ApiComponent, globalShareState, IconPicker } from '@vben/common-ui';
-import { $t } from '@vben/locales';
+import {ApiComponent, globalShareState, IconPicker} from '@vben/common-ui';
+import {$t} from '@vben/locales';
 
-import { message } from '#/adapter/naive';
+import {message} from '#/adapter/naive';
 
 const NButton = defineAsyncComponent(() =>
   import('naive-ui/es/button').then((res) => res.NButton),
@@ -72,7 +72,7 @@ const withDefaultPlaceholder = <T extends Component>(
   return defineComponent({
     name: component.name,
     inheritAttrs: false,
-    setup: (props: any, { attrs, expose, slots }) => {
+    setup: (props: any, {attrs, expose, slots}) => {
       const placeholder =
         props?.placeholder ||
         attrs?.placeholder ||
@@ -91,7 +91,7 @@ const withDefaultPlaceholder = <T extends Component>(
       return () =>
         h(
           component,
-          { ...componentProps, placeholder, ...props, ...attrs, ref: innerRef },
+          {...componentProps, placeholder, ...props, ...attrs, ref: innerRef},
           slots,
         );
     },
@@ -152,30 +152,30 @@ async function initComponentAdapter() {
       },
     ),
     Checkbox: NCheckbox,
-    CheckboxGroup: (props, { attrs, slots }) => {
+    CheckboxGroup: (props, {attrs, slots}) => {
       let defaultSlot;
       if (Reflect.has(slots, 'default')) {
         defaultSlot = slots.default;
       } else {
-        const { options } = attrs;
+        const {options} = attrs;
         if (Array.isArray(options)) {
           defaultSlot = () => options.map((option) => h(NCheckbox, option));
         }
       }
       return h(
         NCheckboxGroup,
-        { ...props, ...attrs },
-        { default: defaultSlot },
+        {...props, ...attrs},
+        {default: defaultSlot},
       );
     },
     DatePicker: NDatePicker,
     // 自定义默认按钮
-    DefaultButton: (props, { attrs, slots }) => {
-      return h(NButton, { ...props, attrs, type: 'default' }, slots);
+    DefaultButton: (props, {attrs, slots}) => {
+      return h(NButton, {...props, attrs, type: 'default'}, slots);
     },
     // 自定义主要按钮
-    PrimaryButton: (props, { attrs, slots }) => {
-      return h(NButton, { ...props, attrs, type: 'primary' }, slots);
+    PrimaryButton: (props, {attrs, slots}) => {
+      return h(NButton, {...props, attrs, type: 'primary'}, slots);
     },
     Divider: NDivider,
     IconPicker: withDefaultPlaceholder(IconPicker, 'select', {
@@ -184,12 +184,12 @@ async function initComponentAdapter() {
     }),
     Input: withDefaultPlaceholder(NInput, 'input'),
     InputNumber: withDefaultPlaceholder(NInputNumber, 'input'),
-    RadioGroup: (props, { attrs, slots }) => {
+    RadioGroup: (props, {attrs, slots}) => {
       let defaultSlot;
       if (Reflect.has(slots, 'default')) {
         defaultSlot = slots.default;
       } else {
-        const { options } = attrs;
+        const {options} = attrs;
         if (Array.isArray(options)) {
           defaultSlot = () =>
             options.map((option) =>
@@ -199,11 +199,11 @@ async function initComponentAdapter() {
       }
       const groupRender = h(
         NRadioGroup,
-        { ...props, ...attrs },
-        { default: defaultSlot },
+        {...props, ...attrs},
+        {default: defaultSlot},
       );
       return attrs.isButton
-        ? h(NSpace, { vertical: true }, () => groupRender)
+        ? h(NSpace, {vertical: true}, () => groupRender)
         : groupRender;
     },
     Select: withDefaultPlaceholder(NSelect, 'select'),
@@ -228,4 +228,4 @@ async function initComponentAdapter() {
   });
 }
 
-export { initComponentAdapter };
+export {initComponentAdapter};

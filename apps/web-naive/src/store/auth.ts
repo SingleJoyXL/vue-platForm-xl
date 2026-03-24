@@ -1,17 +1,17 @@
-import type { Recordable, UserInfo } from '@vben/types';
+import type {Recordable, UserInfo} from '@vben/types';
 
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import {ref} from 'vue';
+import {useRouter} from 'vue-router';
 
-import { LOGIN_PATH } from '@vben/constants';
-import { preferences } from '@vben/preferences';
-import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
+import {LOGIN_PATH} from '@vben/constants';
+import {preferences} from '@vben/preferences';
+import {resetAllStores, useAccessStore, useUserStore} from '@vben/stores';
 
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 
-import { notification } from '#/adapter/naive';
-import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi } from '#/api';
-import { $t } from '#/locales';
+import {notification} from '#/adapter/naive';
+import {getAccessCodesApi, getUserInfoApi, loginApi, logoutApi} from '#/api';
+import {$t} from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();
@@ -33,7 +33,9 @@ export const useAuthStore = defineStore('auth', () => {
     let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
-      const { accessToken } = await loginApi(params);
+
+      const {accessToken} = await loginApi(params);
+      debugger
 
       // 如果成功获取到 accessToken
       if (accessToken) {
@@ -57,8 +59,8 @@ export const useAuthStore = defineStore('auth', () => {
           onSuccess
             ? await onSuccess?.()
             : await router.push(
-                userInfo.homePath || preferences.app.defaultHomePath,
-              );
+              userInfo.homePath || preferences.app.defaultHomePath,
+            );
         }
 
         if (userInfo?.realName) {
@@ -92,8 +94,8 @@ export const useAuthStore = defineStore('auth', () => {
       path: LOGIN_PATH,
       query: redirect
         ? {
-            redirect: encodeURIComponent(router.currentRoute.value.fullPath),
-          }
+          redirect: encodeURIComponent(router.currentRoute.value.fullPath),
+        }
         : {},
     });
   }

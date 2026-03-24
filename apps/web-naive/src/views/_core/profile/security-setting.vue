@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import {computed} from 'vue';
 
-import { ProfileSecuritySetting } from '@vben/common-ui';
+import {ProfileSecuritySetting} from '@vben/common-ui';
 
 const formSchema = computed(() => {
   return [
@@ -39,5 +39,5 @@ const formSchema = computed(() => {
 });
 </script>
 <template>
-  <ProfileSecuritySetting :form-schema="formSchema" />
+  <ProfileSecuritySetting :form-schema="formSchema"/>
 </template>

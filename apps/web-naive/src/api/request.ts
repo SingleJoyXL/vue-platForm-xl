@@ -1,24 +1,24 @@
 /**
  * 该文件可自行根据业务逻辑进行调整
  */
-import type { RequestClientOptions } from '@vben/request';
+import type {RequestClientOptions} from '@vben/request';
 
-import { useAppConfig } from '@vben/hooks';
-import { preferences } from '@vben/preferences';
+import {useAppConfig} from '@vben/hooks';
+import {preferences} from '@vben/preferences';
 import {
   authenticateResponseInterceptor,
   defaultResponseInterceptor,
   errorMessageResponseInterceptor,
   RequestClient,
 } from '@vben/request';
-import { useAccessStore } from '@vben/stores';
+import {useAccessStore} from '@vben/stores';
 
-import { message } from '#/adapter/naive';
-import { useAuthStore } from '#/store';
+import {message} from '#/adapter/naive';
+import {useAuthStore} from '#/store';
 
-import { refreshTokenApi } from './core';
+import {refreshTokenApi} from './core';
 
-const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
+const {apiURL} = useAppConfig(import.meta.env, import.meta.env.PROD);
 
 function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   const client = new RequestClient({
@@ -109,4 +109,4 @@ export const requestClient = createRequestClient(apiURL, {
   responseReturn: 'data',
 });
 
-export const baseRequestClient = new RequestClient({ baseURL: apiURL });
+export const baseRequestClient = new RequestClient({baseURL: apiURL});

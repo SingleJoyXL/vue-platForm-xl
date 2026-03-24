@@ -34,10 +34,7 @@
     "commit": "czg",
     "dev": "turbo-run dev",
     "dev:docs": "pnpm -F @vben/docs run dev",
-
     "dev:naive": "pnpm -F @vben/web-naive run dev",
-
-
     "format": "vsh lint --format",
     "lint": "vsh lint",
     "postinstall": "pnpm -r run stub --if-present",
@@ -89,7 +86,8 @@
     "vite": "catalog:",
     "vitest": "catalog:",
     "vue": "catalog:",
-    "vue-tsc": "catalog:"
+    "vue-tsc": "catalog:",
+    "jsencrypt": "^3.1.0"
   },
   "engines": {
     "node": "^20.19.0 || ^22.18.0 || ^24.0.0",

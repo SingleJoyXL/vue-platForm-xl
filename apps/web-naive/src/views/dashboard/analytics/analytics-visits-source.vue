@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import type { EchartsUIType } from '@vben/plugins/echarts';
+import type {EchartsUIType} from '@vben/plugins/echarts';
 
-import { onMounted, ref } from 'vue';
+import {onMounted, ref} from 'vue';
 
-import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
+import {EchartsUI, useEcharts} from '@vben/plugins/echarts';
 
 const chartRef = ref<EchartsUIType>();
-const { renderEcharts } = useEcharts(chartRef);
+const {renderEcharts} = useEcharts(chartRef);
 
 onMounted(() => {
   renderEcharts({
@@ -24,10 +24,10 @@ onMounted(() => {
         avoidLabelOverlap: false,
         color: ['#5ab1ef', '#b6a2de', '#67e0e3', '#2ec7c9'],
         data: [
-          { name: '搜索引擎', value: 1048 },
-          { name: '直接访问', value: 735 },
-          { name: '邮件营销', value: 580 },
-          { name: '联盟广告', value: 484 },
+          {name: '搜索引擎', value: 1048},
+          {name: '直接访问', value: 735},
+          {name: '邮件营销', value: 580},
+          {name: '联盟广告', value: 484},
         ],
         emphasis: {
           label: {
@@ -61,5 +61,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <EchartsUI ref="chartRef" />
+  <EchartsUI ref="chartRef"/>
 </template>

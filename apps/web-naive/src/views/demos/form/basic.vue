@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { Page, useVbenModal } from '@vben/common-ui';
+import {Page, useVbenModal} from '@vben/common-ui';
 
-import { NButton, NCard, useMessage } from 'naive-ui';
+import {NButton, NCard, useMessage} from 'naive-ui';
 
-import { useVbenForm } from '#/adapter/form';
-import { getAllMenusApi } from '#/api';
+import {useVbenForm} from '#/adapter/form';
+import {getAllMenusApi} from '#/api';
 
 import modalDemo from './modal.vue';
 
@@ -79,11 +79,11 @@ const [Form, formApi] = useVbenForm({
       label: 'Radio',
       componentProps: {
         options: [
-          { value: 'A', label: 'A' },
-          { value: 'B', label: 'B' },
-          { value: 'C', label: 'C' },
-          { value: 'D', label: 'D' },
-          { value: 'E', label: 'E' },
+          {value: 'A', label: 'A'},
+          {value: 'B', label: 'B'},
+          {value: 'C', label: 'C'},
+          {value: 'D', label: 'D'},
+          {value: 'E', label: 'E'},
         ],
       },
       rules: 'selectRequired',
@@ -96,11 +96,11 @@ const [Form, formApi] = useVbenForm({
         isButton: true,
         class: 'flex flex-wrap', // 如果选项过多，可以添加class来自动折叠
         options: [
-          { value: 'A', label: '选项A' },
-          { value: 'B', label: '选项B' },
-          { value: 'C', label: '选项C' },
-          { value: 'D', label: '选项D' },
-          { value: 'E', label: '选项E' },
+          {value: 'A', label: '选项A'},
+          {value: 'B', label: '选项B'},
+          {value: 'C', label: '选项C'},
+          {value: 'D', label: '选项D'},
+          {value: 'E', label: '选项E'},
         ],
       },
       rules: 'selectRequired',
@@ -111,9 +111,9 @@ const [Form, formApi] = useVbenForm({
       label: 'Checkbox',
       componentProps: {
         options: [
-          { value: 'A', label: '选项A' },
-          { value: 'B', label: '选项B' },
-          { value: 'C', label: '选项C' },
+          {value: 'A', label: '选项A'},
+          {value: 'B', label: '选项B'},
+          {value: 'C', label: '选项C'},
         ],
       },
       rules: 'selectRequired',
@@ -135,6 +135,7 @@ const [Form, formApi] = useVbenForm({
     },
   ],
 });
+
 function setFormValues() {
   formApi.setValues({
     string: 'string',
@@ -162,8 +163,8 @@ const [Modal, modalApi] = useVbenModal({
           打开弹窗
         </NButton>
       </template>
-      <Form />
+      <Form/>
     </NCard>
-    <Modal />
+    <Modal/>
   </Page>
 </template>

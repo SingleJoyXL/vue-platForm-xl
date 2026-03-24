@@ -6,8 +6,8 @@ import type {
   WorkbenchTrendItem,
 } from '@vben/common-ui';
 
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import {ref} from 'vue';
+import {useRouter} from 'vue-router';
 
 import {
   AnalysisChartCard,
@@ -17,9 +17,9 @@ import {
   WorkbenchTodo,
   WorkbenchTrends,
 } from '@vben/common-ui';
-import { preferences } from '@vben/preferences';
-import { useUserStore } from '@vben/stores';
-import { openWindow } from '@vben/utils';
+import {preferences} from '@vben/preferences';
+import {useUserStore} from '@vben/stores';
+import {openWindow} from '@vben/utils';
 
 import AnalyticsVisitsSource from '../analytics/analytics-visits-source.vue';
 
@@ -241,13 +241,13 @@ function navTo(nav: WorkbenchProjectItem | WorkbenchQuickNavItem) {
       <template #title>
         早安, {{ userStore.userInfo?.realName }}, 开始您一天的工作吧！
       </template>
-      <template #description> 今日晴，20℃ - 32℃！ </template>
+      <template #description> 今日晴，20℃ - 32℃！</template>
     </WorkbenchHeader>
 
     <div class="mt-5 flex flex-col lg:flex-row">
       <div class="mr-4 w-full lg:w-3/5">
-        <WorkbenchProject :items="projectItems" title="项目" @click="navTo" />
-        <WorkbenchTrends :items="trendItems" class="mt-5" title="最新动态" />
+        <WorkbenchProject :items="projectItems" title="项目" @click="navTo"/>
+        <WorkbenchTrends :items="trendItems" class="mt-5" title="最新动态"/>
       </div>
       <div class="w-full lg:w-2/5">
         <WorkbenchQuickNav
@@ -256,9 +256,9 @@ function navTo(nav: WorkbenchProjectItem | WorkbenchQuickNavItem) {
           title="快捷导航"
           @click="navTo"
         />
-        <WorkbenchTodo :items="todoItems" class="mt-5" title="待办事项" />
+        <WorkbenchTodo :items="todoItems" class="mt-5" title="待办事项"/>
         <AnalysisChartCard class="mt-5" title="访问来源">
-          <AnalyticsVisitsSource />
+          <AnalyticsVisitsSource/>
         </AnalysisChartCard>
       </div>
     </div>

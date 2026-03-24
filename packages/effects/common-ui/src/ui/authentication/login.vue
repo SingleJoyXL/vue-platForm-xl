@@ -1,186 +1,110 @@
 <script setup lang="ts">
 import type { Recordable } from '@vben/types';
 
-import type { VbenFormSchema } from '@vben-core/form-ui';
-
-import type { AuthenticationProps } from './types';
+import { encrypt } from "./utils/rsaEncrypt";
 
 import { computed, onMounted, reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
 
-import { $t } from '@vben/locales';
-
-import { useVbenForm } from '@vben-core/form-ui';
-import { VbenButton, VbenCheckbox } from '@vben-core/shadcn-ui';
-
-import Title from './auth-title.vue';
-import ThirdPartyLogin from './third-party-login.vue';
-
-interface Props extends AuthenticationProps {
-  formSchema?: VbenFormSchema[];
-}
 
 defineOptions({
   name: 'AuthenticationLogin',
-});
-
-const props = withDefaults(defineProps<Props>(), {
-  codeLoginPath: '/auth/code-login',
-  forgetPasswordPath: '/auth/forget-password',
-  formSchema: () => [],
-  loading: false,
-  qrCodeLoginPath: '/auth/qrcode-login',
-  registerPath: '/auth/register',
-  showCodeLogin: true,
-  showForgetPassword: true,
-  showQrcodeLogin: true,
-  showRegister: true,
-  showRememberMe: true,
-  showThirdPartyLogin: true,
-  submitButtonText: '',
-  subTitle: '',
-  title: '',
 });
 
 const emit = defineEmits<{
   submit: [Recordable<any>];
 }>();
 
-const [Form, formApi] = useVbenForm(
-  reactive({
-    commonConfig: {
-      hideLabel: true,
-      hideRequiredMark: true,
-    },
-    schema: computed(() => props.formSchema),
-    showDefaultActions: false,
-  }),
-);
-const router = useRouter();
 
-const REMEMBER_ME_KEY = `REMEMBER_ME_USERNAME_${location.hostname}`;
-
-const localUsername = localStorage.getItem(REMEMBER_ME_KEY) || '';
-
-const rememberMe = ref(!!localUsername);
-
-async function handleSubmit() {
-  const { valid } = await formApi.validate();
-  const values = await formApi.getValues();
-  if (valid) {
-    localStorage.setItem(
-      REMEMBER_ME_KEY,
-      rememberMe.value ? values?.username : '',
-    );
-    emit('submit', values);
-  }
-}
-
-function handleGo(path: string) {
-  router.push(path);
-}
 
 onMounted(() => {
-  if (localUsername) {
-    formApi.setFieldValue('username', localUsername);
-  }
+
 });
 
+const formData = reactive({
+  username: "avatar",
+  passwd: "123456",
+});
+const loading =ref(false);
+const formRules = reactive({
+  username: [{ required: true, message: "请输入账号", trigger: "blur" }],
+  passwd: [{ required: true, message: "请输入密码", trigger: "blur" }]
+});
+
+const handleSubmit =()=>{
+  const params={
+    username:formData.username,
+    passwd: encrypt(formData.passwd),
+  }
+  emit('submit', params);
+}
+
 defineExpose({
-  getFormApi: () => formApi,
+  getFormApi: () => {
+
+  },
 });
 </script>
 
 <template>
-  <div @keydown.enter.prevent="handleSubmit">
-    <slot name="title">
-      <Title>
-        <slot name="title">
-          {{ title || `${$t('authentication.welcomeBack')} 👋🏻` }}
-        </slot>
-        <template #desc>
-          <span class="text-muted-foreground">
-            <slot name="subTitle">
-              {{ subTitle || $t('authentication.loginSubtitle') }}
-            </slot>
-          </span>
-        </template>
-      </Title>
-    </slot>
 
-    <Form />
-
-    <div
-      v-if="showRememberMe || showForgetPassword"
-      class="mb-6 flex justify-between"
+  <div @keydown.enter.prevent="handleSubmit" class="login">
+    <vxe-form
+      ref="ruleFormRef"
+      class="login-form"
+      :model="formData"
+      :rules="formRules"
+      :vertical="true"
+      size="mini"
     >
-      <div class="flex-center">
-        <VbenCheckbox
-          v-if="showRememberMe"
-          v-model="rememberMe"
-          name="rememberMe"
-        >
-          {{ $t('authentication.rememberMe') }}
-        </VbenCheckbox>
-      </div>
+      <vxe-form-item title="账号" field="username"  :span="24">
+        <vxe-input
+            v-model="formData.username"
+            clearable
+            placeholder="账号"
+        />
+      </vxe-form-item>
 
-      <span
-        v-if="showForgetPassword"
-        class="vben-link text-sm font-normal"
-        @click="handleGo(forgetPasswordPath)"
-      >
-        {{ $t('authentication.forgetPassword') }}
-      </span>
-    </div>
-    <VbenButton
-      :class="{
-        'cursor-wait': loading,
-      }"
-      :loading="loading"
-      aria-label="login"
-      class="w-full"
-      @click="handleSubmit"
-    >
-      {{ submitButtonText || $t('common.login') }}
-    </VbenButton>
 
-    <div
-      v-if="showCodeLogin || showQrcodeLogin"
-      class="mt-4 mb-2 flex items-center justify-between"
-    >
-      <VbenButton
-        v-if="showCodeLogin"
-        class="w-1/2"
-        variant="outline"
-        @click="handleGo(codeLoginPath)"
-      >
-        {{ $t('authentication.mobileLogin') }}
-      </VbenButton>
-      <VbenButton
-        v-if="showQrcodeLogin"
-        class="ml-4 w-1/2"
-        variant="outline"
-        @click="handleGo(qrCodeLoginPath)"
-      >
-        {{ $t('authentication.qrcodeLogin') }}
-      </VbenButton>
-    </div>
+        <vxe-form-item  title="密码" field="passwd" :span="24">
+          <vxe-input
+            v-model="formData.passwd"
+            clearable
+           type="password"
+            placeholder="密码"
+          />
+        </vxe-form-item>
 
-    <!-- 第三方登录 -->
-    <slot name="third-party-login">
-      <ThirdPartyLogin v-if="showThirdPartyLogin" />
-    </slot>
+        <vxe-form-item :span="24">
+         <vxe-button
+          status="primary"
+          content="登录"
+          style="width: 100%"
+          :loading="loading"
+          @click="handleSubmit()"
+        />
+        </vxe-form-item>
 
-    <slot name="to-register">
-      <div v-if="showRegister" class="mt-3 text-center text-sm">
-        {{ $t('authentication.accountTip') }}
-        <span
-          class="vben-link text-sm font-normal"
-          @click="handleGo(registerPath)"
-        >
-          {{ $t('authentication.createAccount') }}
-        </span>
-      </div>
-    </slot>
+
+    </vxe-form>
   </div>
 </template>
+
+<style lang="scss" scoped>
+
+.login {
+  width: 100vw;
+  height: 240px;
+  display: flex;
+  margin: 50% 30%;
+
+  .login-form{
+    border-radius: 10px;
+    padding: 20px;
+    border: 2px solid #ccc;
+  }
+}
+
+
+
+
+</style>
