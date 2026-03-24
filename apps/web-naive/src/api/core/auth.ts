@@ -1,4 +1,4 @@
-import {baseRequestClient, requestClient} from '#/api/request';
+import { defHttp } from "@/utils/http";
 
 export namespace AuthApi {
   /** 登录接口参数 */
@@ -21,31 +21,7 @@ export namespace AuthApi {
 /**
  * 登录
  */
-export async function loginApi(data: AuthApi.LoginParams) {
-  return requestClient.post<AuthApi.LoginResult>('/dataAssetService/service/user/login', data);
+export async function loginApi(data: any) {
+  return defHttp.post('/dataAssetService/service/user/login', data);
 }
 
-/**
- * 刷新accessToken
- */
-export async function refreshTokenApi() {
-  return baseRequestClient.post<AuthApi.RefreshTokenResult>('/auth/refresh', {
-    withCredentials: true,
-  });
-}
-
-/**
- * 退出登录
- */
-export async function logoutApi() {
-  return baseRequestClient.post('/auth/logout', {
-    withCredentials: true,
-  });
-}
-
-/**
- * 获取用户权限码
- */
-export async function getAccessCodesApi() {
-  return requestClient.get<string[]>('/auth/codes');
-}

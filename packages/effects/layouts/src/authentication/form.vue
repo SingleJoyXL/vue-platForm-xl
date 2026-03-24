@@ -12,8 +12,6 @@ defineProps<{
   <div
     class=""
   >
-
-
     <RouterView v-slot="{ Component, route }">
       <Transition appear mode="out-in" name="slide-right">
         <KeepAlive :include="['Login']">
@@ -26,9 +24,7 @@ defineProps<{
         </KeepAlive>
       </Transition>
     </RouterView>
-
     <!-- Footer Copyright -->
-
     <div
       class="absolute bottom-3 flex text-center text-xs text-muted-foreground"
     >

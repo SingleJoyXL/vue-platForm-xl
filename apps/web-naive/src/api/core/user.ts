@@ -1,10 +1,10 @@
 
 
-import {requestClient} from "#/api/request";
+import { defHttp } from "@/utils/http";
 
 /**
  * 获取用户信息
  */
 export async function getUserInfoApi() {
-  return requestClient.get('/user/info');
+  return defHttp.get('/user/info');
 }
