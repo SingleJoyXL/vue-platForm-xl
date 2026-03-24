@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import JSEncrypt from "jsencrypt";
+import JSEncrypt from "jsencrypt/lib/index.js";
 
 // 密钥对生成 http://web.chacuo.net/netrsakeypair
 
