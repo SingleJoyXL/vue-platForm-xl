@@ -1,4 +1,4 @@
-import { defHttp } from "@/utils/http";
+import { defHttp } from "#/utils/http";
 
 export namespace AuthApi {
   /** 登录接口参数 */
@@ -7,15 +7,6 @@ export namespace AuthApi {
     username?: string;
   }
 
-  /** 登录接口返回值 */
-  export interface LoginResult {
-    accessToken: string;
-  }
-
-  export interface RefreshTokenResult {
-    data: string;
-    status: number;
-  }
 }
 
 /**

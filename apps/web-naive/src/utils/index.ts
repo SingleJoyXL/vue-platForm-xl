@@ -1,4 +1,4 @@
-import { isArray, isObject, isString } from "@/utils/is";
+import { isArray, isObject, isString } from "#/utils/is";
 import { listItemMetaProps } from "ant-design-vue/es/list/ItemMeta";
 import { intersectionWith, isEqual, mergeWith, unionWith } from "lodash-es";
 

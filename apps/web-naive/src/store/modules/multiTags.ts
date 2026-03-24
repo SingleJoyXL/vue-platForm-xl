@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
-import { store } from "@/store";
-import { routerArrays } from "@/layout/types";
+import { store } from "#/store";
+import { routerArrays } from "#/layout/types";
 import type { multiType, positionType } from "./types";
-import { responsiveStorageNameSpace } from "@/config";
+import { responsiveStorageNameSpace } from "#/config";
 import { isEqual, isBoolean, isUrl, storageLocal } from "@pureadmin/utils";
 
 function normalizeMultiTags(tags: unknown) {
@@ -15,7 +15,25 @@ function normalizeMultiTags(tags: unknown) {
   );
   return validTags.length > 0 ? validTags : [...routerArrays];
 }
-
+interface StorageConfigs {
+  version?: string;
+  title?: string;
+  fixedHeader?: boolean;
+  hiddenSideBar?: boolean;
+  multiTagsCache?: boolean;
+  keepAlive?: boolean;
+  locale?: string;
+  layout?: string;
+  theme?: string;
+  grey?: boolean;
+  weak?: boolean;
+  hideTabs?: boolean;
+  sidebarStatus?: boolean;
+  epThemeColor?: string;
+  showLogo?: boolean;
+  showModel?: string;
+  username?: string;
+}
 export const useMultiTagsStore = defineStore({
   id: "pure-multiTags",
   state: () => ({

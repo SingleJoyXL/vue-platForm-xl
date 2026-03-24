@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import { storageSession } from "@pureadmin/utils";
-import { UserResult } from "@/api/user";
+import { UserResult } from "#/api/user";
 import { useUserStoreHook } from "@/store/modules/user";
 
 export interface DataInfo {
@@ -45,10 +45,6 @@ export function setToken(userInfo: UserResult) {
     fullname: string,
     roles: Array<string>
   ) {
-    useUserStoreHook().SET_ID(id);
-    useUserStoreHook().SET_USERNAME(username);
-    useUserStoreHook().SET_FULLNAME(fullname);
-    useUserStoreHook().SET_ROLES(roles);
     storageSession().setItem(sessionKey, {
       token,
       id,
