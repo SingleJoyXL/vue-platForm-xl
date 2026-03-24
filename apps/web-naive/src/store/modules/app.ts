@@ -36,5 +36,5 @@ export const useAppStore = defineStore({
 });
 
 export function useAppStoreHook() {
-  return useAppStore(store);
+  return useAppStore();
 }

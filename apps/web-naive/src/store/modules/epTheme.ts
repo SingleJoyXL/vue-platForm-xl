@@ -33,5 +33,5 @@ export const useEpThemeStore = defineStore({
 });
 
 export function useEpThemeStoreHook() {
-  return useEpThemeStore(store);
+  return useEpThemeStore();
 }
