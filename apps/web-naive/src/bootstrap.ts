@@ -40,9 +40,9 @@ async function bootstrap(namespace: string) {
   const app = createApp(App);
 
  // 屏蔽黄色警告信息;
-  app.config.errorHandler = () => null;
-
-  app.config.warnHandler = () => null;
+ //  app.config.errorHandler = () => null;
+ //
+ //  app.config.warnHandler = () => null;
 
   // 注册v-loading指令
   registerLoadingDirective(app, {

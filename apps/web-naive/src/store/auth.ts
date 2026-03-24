@@ -5,7 +5,7 @@ import {useRouter} from 'vue-router';
 
 import {LOGIN_PATH} from '@vben/constants';
 import {preferences} from '@vben/preferences';
-import {resetAllStores, useAccessStore, useUserStore} from '@vben/stores';
+import {resetAllStores, useAccessStore, useUserStore} from '#/store/modules/user';
 
 import {defineStore} from 'pinia';
 

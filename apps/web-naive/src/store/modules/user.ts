@@ -74,10 +74,11 @@ export const useUserStore = defineStore("pure-user", {
       this.url = url;
     },
     /** 登入 */
-    async loginByUsername(data) {
+    async authLogin(data) {
       return new Promise<UserResult>((resolve, reject) => {
         getLogin(data)
           .then(res => {
+            debugger
             setToken(res.data);
             resolve(res.data);
           })

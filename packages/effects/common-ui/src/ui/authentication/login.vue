@@ -66,7 +66,7 @@ defineExpose({
 
 
         <vxe-form-item  title="密码" field="passwd" :span="24">
-          <vxe-input
+          <vxe-password-input
             v-model="formData.passwd"
             clearable
            type="password"

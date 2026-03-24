@@ -106,6 +106,7 @@ const { VITE_HIDE_HOME } = import.meta.env;
 let isCheckingUser = false;
 
 router.beforeEach((to: any, _from, next) => {
+  const rootChildren = (router.options.routes?.[0]?.children ?? []) as any[];
   if (to.meta?.keepAlive) {
     handleAliveRoute(to, "add");
     // 页面整体刷新和点击标签页刷新
@@ -130,7 +131,7 @@ router.beforeEach((to: any, _from, next) => {
   }
   const maybeDir = findRouteByPath(
     to.path,
-    router.options.routes[0].children as any
+    rootChildren
   );
   if (
     maybeDir &&
@@ -181,7 +182,7 @@ router.beforeEach((to: any, _from, next) => {
             const { path } = to;
             const route = findRouteByPath(
               path,
-              router.options.routes[0].children
+              rootChildren
             );
             getTopMenu(true);
             // query、params模式路由传参数的标签页不在此处处理

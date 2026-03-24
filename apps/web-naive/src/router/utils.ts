@@ -117,7 +117,8 @@ function getParentPaths(value: string, routes: RouteRecordRaw[], key = "path") {
 }
 
 /** 查找对应 `path` 的路由信息 */
-function findRouteByPath(path: string, routes: RouteRecordRaw[]) {
+function findRouteByPath(path: string, routes: RouteRecordRaw[] = []) {
+  if (!Array.isArray(routes) || routes.length === 0) return null;
   let res = routes.find((item: { path: string }) => item.path == path);
   if (res) {
     return isProxy(res) ? toRaw(res) : res;
@@ -156,8 +157,8 @@ function handleAsyncRoutes(routeList) {
       (v: RouteRecordRaw) => {
         // 防止重复添加路由
         if (
-          router.options.routes[0].children.findIndex(
-            value => value.path === v.path
+          router?.options?.routes[0]?.children?.findIndex(
+            value => value?.path === v.path
           ) !== -1
         ) {
           return;
@@ -186,6 +187,7 @@ function initRouter() {
     // 开启动态路由缓存本地sessionStorage
     const key = "async-routes";
     const asyncRouteList = storageSession().getItem(key) as any;
+
     if (asyncRouteList && asyncRouteList?.length > 0) {
       return new Promise(resolve => {
         handleAsyncRoutes(asyncRouteList);
