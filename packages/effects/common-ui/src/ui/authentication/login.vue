@@ -14,12 +14,6 @@ const emit = defineEmits<{
   submit: [Recordable<any>];
 }>();
 
-
-
-onMounted(() => {
-
-});
-
 const formData = reactive({
   username: "avatar",
   passwd: "123456",

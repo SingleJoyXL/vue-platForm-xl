@@ -20,7 +20,7 @@ type MenuResult = {
 export const getMenuList = (userId: string) => {
   return defHttp.post<MenuResult>(
     {
-      url: `${Api.getMenuList}?userId=${userId}&rootAuthName=表单管理`
+      url: `${Api.getMenuList}?userId=${userId}&rootAuthName=测试`
     },
     {
       errorMessageMode: "modal"

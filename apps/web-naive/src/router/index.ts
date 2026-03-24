@@ -105,6 +105,19 @@ const { VITE_HIDE_HOME } = import.meta.env;
 
 let isCheckingUser = false;
 
+function normalizePath(path?: string) {
+  if (!path) return "";
+  return path.startsWith("/") ? path : `/${path}`;
+}
+
+function resolveChildPath(parentPath: string, childPath?: string) {
+  if (!childPath) return normalizePath(parentPath);
+  if (childPath.startsWith("/")) return childPath;
+  const base = parentPath.replace(/\/+$/, "");
+  const child = childPath.replace(/^\/+/, "");
+  return `${base}/${child}`;
+}
+
 router.beforeEach((to: any, _from, next) => {
   const rootChildren = (router.options.routes?.[0]?.children ?? []) as any[];
   if (to.meta?.keepAlive) {
@@ -140,11 +153,22 @@ router.beforeEach((to: any, _from, next) => {
   ) {
     const isDirectory = !!maybeDir.meta?.backstage || !maybeDir.component;
     if (isDirectory && to.path === maybeDir.path) {
-      const target = maybeDir.redirect
-        ? maybeDir.children.find(cur => cur.path === maybeDir.redirect)
-        : maybeDir.children[0];
-      if (target?.path) {
-        next({ path: target.path, replace: true });
+      const redirectPath = normalizePath(maybeDir.redirect as string);
+      const fallbackChild = maybeDir.children.find((cur: any) => {
+        const fullChildPath = resolveChildPath(maybeDir.path, cur?.path);
+        return fullChildPath && fullChildPath !== to.path;
+      });
+      const target =
+        (redirectPath &&
+          maybeDir.children.find(
+            (cur: any) => resolveChildPath(maybeDir.path, cur?.path) === redirectPath
+          )) ||
+        fallbackChild;
+      const targetPath = target
+        ? resolveChildPath(maybeDir.path, target.path)
+        : "";
+      if (targetPath && targetPath !== to.path) {
+        next({ path: targetPath, replace: true });
         NProgress.done();
         return;
       }
@@ -157,19 +181,20 @@ router.beforeEach((to: any, _from, next) => {
   if (userInfo) {
     // 无权限跳转403页面
     if (to.meta?.roles && !isOneOfArray(to.meta?.roles, userInfo?.roles)) {
-      next({ path: "/error/403" });
+      return next({ path: "/error/403" });
     }
     // 开启隐藏首页后在浏览器地址栏手动输入首页welcome路由则跳转到404页面
     if (VITE_HIDE_HOME === "true" && to.fullPath === "/welcome") {
-      next({ path: "/error/404" });
+      return next({ path: "/error/404" });
     }
     if (_from?.name) {
       // name为超链接
       if (externalLink) {
         openLink(to?.name as string);
         NProgress.done();
+        return next(false);
       } else {
-        toCorrectRoute();
+        return toCorrectRoute();
       }
     } else {
       // 刷新
@@ -177,13 +202,12 @@ router.beforeEach((to: any, _from, next) => {
         usePermissionStoreHook().wholeMenus.length === 0 &&
         to.path !== "/login"
       ) {
-        initRouter().then((router: Router) => {
+        return initRouter().then((router: Router) => {
+          const currentRootChildren = (router.options.routes?.[0]?.children ??
+            []) as any[];
           if (!useMultiTagsStoreHook().getMultiTagsCache) {
             const { path } = to;
-            const route = findRouteByPath(
-              path,
-              rootChildren
-            );
+            const route = findRouteByPath(path, currentRootChildren);
             getTopMenu(true);
             // query、params模式路由传参数的标签页不在此处处理
             if (route && route.meta?.title) {
@@ -209,7 +233,9 @@ router.beforeEach((to: any, _from, next) => {
           // 确保动态路由被添加到标签页
           if (to.meta?.backstage && to.meta?.title) {
             const multiTags = useMultiTagsStoreHook().multiTags;
-            const hasTag = Array.isArray(multiTags) && multiTags.some((tag: any) => tag.name === to.name);
+            const hasTag =
+              Array.isArray(multiTags) &&
+              multiTags.some((tag: any) => tag.name === to.name);
             if (!hasTag) {
               useMultiTagsStoreHook().handleTags("push", {
                 path: to.path,
@@ -218,11 +244,22 @@ router.beforeEach((to: any, _from, next) => {
               });
             }
           }
-          // 确保动态路由完全加入路由列表并且不影响静态路由（注意：动态路由刷新时router.beforeEach可能会触发两次，第一次触发动态路由还未完全添加，第二次动态路由才完全添加到路由列表，如果需要在router.beforeEach做一些判断可以在to.name存在的条件下去判断，这样就只会触发一次）
-          if (isAllEmpty(to.name)) router.push(to.fullPath);
+          // 动态路由初始化后再次校验目标路由，避免对同一路径反复 replace 导致死循环
+          if (isAllEmpty(to.name)) {
+            const resolved = router.resolve(to.fullPath);
+            if (isAllEmpty(resolved?.name)) {
+              const topMenuPath = getTopMenu(true)?.path;
+              if (topMenuPath && topMenuPath !== to.path) {
+                return next({ path: topMenuPath, replace: true });
+              }
+              return next({ path: "/error/404", replace: true });
+            }
+            return next({ path: to.fullPath, replace: true });
+          }
+          return toCorrectRoute();
         });
       }
-      toCorrectRoute();
+      return toCorrectRoute();
     }
   } else {
     if (!isCheckingUser) {
@@ -240,20 +277,21 @@ router.beforeEach((to: any, _from, next) => {
                 roles: res.data.roles
               } as UserResult;
               setToken(userResult);
-              initRouter().then(() => {
+              return initRouter().then(() => {
                 isCheckingUser = false;
                 if (to.fullPath) {
-                  router.push(to.fullPath);
+                  return next({ path: to.fullPath, replace: true });
                 } else {
-                  router.push(getTopMenu(true).path);
+                  return next({ path: getTopMenu(true).path, replace: true });
                 }
               });
             } else {
+              isCheckingUser = false;
               if (whiteList.indexOf(to.path) !== -1) {
-                next();
+                return next();
               } else {
                 if (process.env.NODE_ENV === "development") {
-                  next({ path: "/login" });
+                  return next({ path: "/login" });
                 } else {
                   if (window !== top) {
                     window.top.location.href = useUserStoreHook().redirectUrl
@@ -269,11 +307,12 @@ router.beforeEach((to: any, _from, next) => {
             }
           })
           .catch(() => {
+            isCheckingUser = false;
             if (whiteList.indexOf(to.path) !== -1) {
-              next();
+              return next();
             } else {
               if (process.env.NODE_ENV === "development") {
-                next({ path: "/login" });
+                return next({ path: "/login" });
               } else {
                 if (window !== top) {
                   window.top.location.href = useUserStoreHook().redirectUrl
@@ -288,10 +327,11 @@ router.beforeEach((to: any, _from, next) => {
             }
           });
       } else {
-        next();
+        isCheckingUser = false;
+        return next();
       }
     } else {
-      next();
+      return next();
     }
   }
 });

@@ -30,6 +30,19 @@ const IFrame = () => import("#/layout/frameView.vue");
 // https://cn.vitejs.dev/guide/features.html#glob-import
 const modulesRoutes = import.meta.glob("/src/views/**/*.{vue,tsx}");
 
+function normalizeRoutePath(path?: string) {
+  if (!path) return "";
+  return path.startsWith("/") ? path : `/${path}`;
+}
+
+function resolveRoutePath(parentPath: string, childPath?: string) {
+  if (!childPath) return normalizeRoutePath(parentPath);
+  if (childPath.startsWith("/")) return childPath;
+  const base = parentPath.replace(/\/+$/, "");
+  const child = childPath.replace(/^\/+/, "");
+  return `${base}/${child}`;
+}
+
 function handRank(routeInfo: any) {
   const { path, parentId, meta } = routeInfo;
   const name = routeInfo?.name || "";
@@ -216,7 +229,7 @@ async function getAsyncRoutes(userId: string) {
   const menuListRes = await getMenuList(userId);
   const menuList: MenuItem[] = [];
   menuListRes.data.forEach(item => {
-    if (item.authObjectDesc === "表单管理") {
+    if (item.authObjectDesc === "测试") {
       item.children.forEach(ele => {
         menuList.push(ele);
       });
@@ -366,9 +379,17 @@ function addAsyncRoutes(arrRoutes: Array<RouteRecordRaw>) {
   arrRoutes.forEach((v: RouteRecordRaw) => {
     // 将backstage属性加入meta，标识此路由为后端返回路由
     v.meta.backstage = true;
-    // 父级的redirect属性取值：如果子级存在且父级的redirect属性不存在，默认取第一个子级的path；如果子级存在且父级的redirect属性存在，取存在的redirect属性，会覆盖默认值
-    if (v?.children && v.children.length && !v.redirect)
-      v.redirect = v.children[0].path;
+    // 父级默认重定向到第一个“非自身”的子路由，避免 parent->parent 的重定向死循环
+    if (v?.children && v.children.length && !v.redirect) {
+      const parentPath = normalizeRoutePath(v.path);
+      const redirectTarget = v.children.find(child => {
+        const childPath = resolveRoutePath(parentPath, child.path);
+        return childPath && childPath !== parentPath;
+      });
+      if (redirectTarget?.path) {
+        v.redirect = redirectTarget.path;
+      }
+    }
     // 父级的name属性取值：如果子级存在且父级的name属性不存在，默认取第一个子级的name；如果子级存在且父级的name属性存在，取存在的name属性，会覆盖默认值（注意：测试中发现父级的name不能和子级name重复，如果重复会造成重定向无效（跳转404），所以这里给父级的name起名的时候后面会自动加上`Parent`，避免重复）
     if (v?.children && v.children.length && !v.name)
       v.name = (v.children[0].name as string) + "Parent";
